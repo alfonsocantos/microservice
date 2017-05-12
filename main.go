@@ -1,8 +1,7 @@
 package main
 
 import (
-	"fmt"
-	handler "handler"
+	healthz "healthz"
 	"log"
 	"net/http"
 	"os"
@@ -10,20 +9,30 @@ import (
 	"github.com/gorilla/mux"
 )
 
+var version string
+
 func main() {
 
-	port := os.Getenv("HOST")
+	log.Println("Version: ", version)
+
+	port := os.Getenv("PORT")
+	host := os.Getenv("HOST")
 
 	if port == "" {
-		log.Println("HOST environment variable not setted, using default 8080")
+		log.Println("PORT environment variable not setted, using default 8080")
 		port = "8080"
 	}
 
-	fmt.Println("Listening on port ", port)
+	if host == "" {
+		log.Println("HOST environment variable not setted, using default 127.0.0.1")
+		host = "localhost"
+	}
+
+	log.Printf("%s %v:%v", "Listening on", host, port)
 
 	r := mux.NewRouter()
-	r.HandleFunc("/healthz", handler.Healthz).Methods("GET")
+	r.HandleFunc("/healthz", healthz.Healthz).Methods("GET")
 
-	log.Fatal(http.ListenAndServe(":"+port, r))
+	log.Fatal(http.ListenAndServe(host+":"+port, r))
 
 }
