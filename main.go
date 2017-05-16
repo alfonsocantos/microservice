@@ -23,12 +23,12 @@ func main() {
 	host := os.Getenv("HOST")
 
 	if port == "" {
-		log.Println("PORT environment variable not setted, using default 8080")
+		log.Println("PORT environment variable not set, using default 8080")
 		port = "8080"
 	}
 
 	if host == "" {
-		log.Println("HOST environment variable not setted, using default 127.0.0.1")
+		log.Println("HOST environment variable not set, using default 127.0.0.1")
 		host = "127.0.0.1"
 	}
 
